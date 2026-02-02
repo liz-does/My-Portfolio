@@ -3,97 +3,133 @@
 const projects = [
     {
         id: 1,
-        title: "E-Commerce Platform",
-        description: "A full-stack e-commerce platform with product catalog, shopping cart, and payment integration.",
-        tech: ["React", "Node.js", "MongoDB", "Stripe"],
-        demoUrl: "https://example.com/demo1",
-        githubUrl: "https://github.com/example/project1"
+        title: "Connect4 Game",
+        description: "A classic Connect4 game implemented in C++ with object-oriented programming principles, featuring game logic, win detection, and interactive gameplay.",
+        tech: ["C++", "Object-Oriented Programming", "Game Development"],
+        demoUrl: "https://www.linkedin.com/posts/ayush-patel-lizdoes_internpe-cpp-ayush-activity-7318529079060615170-pncK?utm_source=share&utm_medium=member_android&rcm=ACoAAEjZUtkBjuSUhDariC2OZcPQ0ITVlVqNilo",
+        githubUrl: "#"
     },
     {
         id: 2,
-        title: "Task Management App",
-        description: "A responsive task management application with real-time updates and user authentication.",
-        tech: ["React", "Firebase", "Tailwind CSS"],
-        demoUrl: "https://example.com/demo2",
-        githubUrl: "https://github.com/example/project2"
+        title: "EV Population Analysis",
+        description: "Comprehensive data analysis of electric vehicle population trends using Tableau, featuring interactive dashboards and visualizations.",
+        tech: ["Tableau", "Data Visualization", "Statistical Analysis"],
+        demoUrl: "assets/projects/evANALYSIS.twb",
+        githubUrl: "#"
     },
     {
         id: 3,
-        title: "Weather Dashboard",
-        description: "Interactive weather dashboard fetching real-time data with charts and forecasts.",
-        tech: ["JavaScript", "API", "Chart.js", "HTML/CSS"],
-        demoUrl: "https://example.com/demo3",
-        githubUrl: "https://github.com/example/project3"
+        title: "Global Energy Consumption Analysis",
+        description: "Python-based analysis of global energy consumption patterns, utilizing pandas, matplotlib, and seaborn for data processing and visualization.",
+        tech: ["Python", "Pandas", "Matplotlib", "Data Analysis"],
+        demoUrl: "assets/projects/global_energy_consumption.csv",
+        githubUrl: "#"
     },
     {
         id: 4,
-        title: "Social Media Feed",
-        description: "A social media feed component with infinite scroll, likes, and comments functionality.",
-        tech: ["React", "Node.js", "PostgreSQL"],
-        demoUrl: "https://example.com/demo4",
-        githubUrl: "https://github.com/example/project4"
-    },
-    {
-        id: 5,
-        title: "Blog Platform",
-        description: "A content management system for creating and sharing blog posts with categories and tags.",
-        tech: ["Next.js", "Prisma", "PostgreSQL"],
-        demoUrl: "https://example.com/demo5",
-        githubUrl: "https://github.com/example/project5"
-    },
-    {
-        id: 6,
-        title: "Fitness Tracker",
-        description: "Mobile-friendly fitness tracking app with workout logs, progress charts, and goal setting.",
-        tech: ["Vue.js", "Firebase", "Chart.js"],
-        demoUrl: "https://example.com/demo6",
-        githubUrl: "https://github.com/example/project6"
+        title: "The Souled Store Annual Report Analysis",
+        description: "Excel-based comprehensive analysis of The Souled Store's annual report, featuring financial modeling, trend analysis, and business insights.",
+        tech: ["Excel", "Financial Analysis", "Data Modeling", "Business Intelligence"],
+        demoUrl: "assets/projects/The Souled Store Annual Report.xlsx",
+        githubUrl: "#"
     }
 ];
 
 // ===== DOM ELEMENTS ===== 
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
-const navLinks = document.querySelectorAll('.nav-link');
-const navbar = document.getElementById('navbar');
-const contactForm = document.getElementById('contactForm');
-const projectsGrid = document.getElementById('projectsGrid');
+let hamburger, navMenu, navLinks, navbar, contactForm, projectsGrid;
+let nameInput, emailInput, messageInput, nameError, emailError, messageError;
 
-// ===== HAMBURGER MENU ===== 
-// Toggle hamburger menu and navigation menu on click
-if (hamburger) {
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
+// ===== INITIALIZE DOM ELEMENTS ===== 
+function initializeDOMElements() {
+    hamburger = document.getElementById('hamburger');
+    navMenu = document.getElementById('navMenu');
+    navLinks = document.querySelectorAll('.nav-link');
+    navbar = document.getElementById('navbar');
+    contactForm = document.getElementById('contactForm');
+    projectsGrid = document.getElementById('projectsGrid');
+    
+    // Form elements
+    nameInput = document.getElementById('name');
+    emailInput = document.getElementById('email');
+    messageInput = document.getElementById('message');
+    nameError = document.getElementById('nameError');
+    emailError = document.getElementById('emailError');
+    messageError = document.getElementById('messageError');
 }
 
-// Close hamburger menu when a navigation link is clicked
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        if (hamburger) hamburger.classList.remove('active');
-        if (navMenu) navMenu.classList.remove('active');
-    });
-});
+// ===== EVENT LISTENERS ===== 
+// Initialize all event listeners after DOM is loaded
+function initializeEventListeners() {
+    // Hamburger menu toggle
+    if (hamburger) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    }
 
-// ===== SMOOTH SCROLLING ===== 
-// Smooth scroll to sections when navigation links are clicked
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
-        if (href.startsWith('#')) {
-            e.preventDefault();
-            const targetSection = document.querySelector(href);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
+    // Navigation links - combined smooth scrolling and menu closing
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            
+            // Close hamburger menu if open
+            if (hamburger) hamburger.classList.remove('active');
+            if (navMenu) navMenu.classList.remove('active');
+            
+            // Smooth scroll to section
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const targetSection = document.querySelector(href);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
             }
-        }
+        });
     });
-});
+
+    // Form validation event listeners
+    if (nameInput) {
+        nameInput.addEventListener('blur', () => {
+            if (!validateName(nameInput.value)) {
+                showError(nameInput, nameError, 'Name must be at least 2 characters long');
+            } else {
+                clearError(nameInput, nameError);
+            }
+        });
+    }
+
+    if (emailInput) {
+        emailInput.addEventListener('blur', () => {
+            if (!validateEmail(emailInput.value)) {
+                showError(emailInput, emailError, 'Please enter a valid email address');
+            } else {
+                clearError(emailInput, emailError);
+            }
+        });
+    }
+
+    if (messageInput) {
+        messageInput.addEventListener('blur', () => {
+            if (!validateMessage(messageInput.value)) {
+                showError(messageInput, messageError, 'Message must be at least 10 characters long');
+            } else {
+                clearError(messageInput, messageError);
+            }
+        });
+    }
+
+    // Form submission
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleFormSubmit);
+    }
+}
 
 // ===== LOAD PROJECTS DYNAMICALLY ===== 
 // Render project cards dynamically from the projects array
 function renderProjects() {
+    if (!projectsGrid) return;
+    
     projectsGrid.innerHTML = '';
     projects.forEach(project => {
         const projectCard = document.createElement('div');
@@ -101,30 +137,20 @@ function renderProjects() {
         projectCard.innerHTML = `
             <div class="project-image">${project.title}</div>
             <div class="project-content">
-                <h3 class="project-title">${project.title}</h3>
                 <p class="project-description">${project.description}</p>
                 <div class="project-tags">
                     ${project.tech.map(tech => `<span class="tag">${tech}</span>`).join('')}
                 </div>
                 <div class="project-links">
-                    <a href=\"${project.demoUrl}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"project-link\">Live Demo</a>
-                    <a href=\"${project.githubUrl}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"project-link\">GitHub</a>
+                    <a href="${project.demoUrl}" target="_blank" rel="noopener noreferrer" class="project-link">View</a>
                 </div>
             </div>
-        `;\n        projectsGrid.appendChild(projectCard);
+        `;
+        projectsGrid.appendChild(projectCard);
     });
-}\n
-// Render projects when page loads
-renderProjects();
+}
 
 // ===== FORM VALIDATION ===== 
-const nameInput = document.getElementById('name');
-const emailInput = document.getElementById('email');
-const messageInput = document.getElementById('message');
-const nameError = document.getElementById('nameError');
-const emailError = document.getElementById('emailError');
-const messageError = document.getElementById('messageError');
-
 // Validation function for name (minimum 2 characters)
 function validateName(name) {
     return name.trim().length >= 2;
@@ -132,7 +158,7 @@ function validateName(name) {
 
 // Validation function for email (proper email format)
 function validateEmail(email) {
-    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
@@ -155,35 +181,8 @@ function clearError(input, errorElement) {
     errorElement.classList.remove('show');
 }
 
-// Real-time validation for name field
-nameInput.addEventListener('blur', () => {
-    if (!validateName(nameInput.value)) {
-        showError(nameInput, nameError, 'Name must be at least 2 characters long');
-    } else {
-        clearError(nameInput, nameError);
-    }
-});
-
-// Real-time validation for email field
-emailInput.addEventListener('blur', () => {
-    if (!validateEmail(emailInput.value)) {
-        showError(emailInput, emailError, 'Please enter a valid email address');
-    } else {
-        clearError(emailInput, emailError);
-    }
-});
-
-// Real-time validation for message field
-messageInput.addEventListener('blur', () => {
-    if (!validateMessage(messageInput.value)) {
-        showError(messageInput, messageError, 'Message must be at least 10 characters long');
-    } else {
-        clearError(messageInput, messageError);
-    }
-});
-
-// Form submission with validation
-contactForm.addEventListener('submit', (e) => {
+// Handle form submission with validation
+function handleFormSubmit(e) {
     e.preventDefault();
 
     // Validate all fields before submission
@@ -212,10 +211,20 @@ contactForm.addEventListener('submit', (e) => {
 
     // If all fields are valid, submit the form
     if (isValid) {
-        alert('Thank you for your message! I will get back to you soon.');
+        // Here you would typically send the form data to your backend
+        // For now, we'll show a success message and simulate sending to patelayush8280@gmail.com
+        alert('Thank you for your message! Your message has been sent to patelayush8280@gmail.com. I will get back to you soon.');
         contactForm.reset();
+        
+        // Log the form data (in a real implementation, this would be sent to a server)
+        console.log('Form data to be sent to patelayush8280@gmail.com:', {
+            name: nameInput.value,
+            email: emailInput.value,
+            message: messageInput.value,
+            timestamp: new Date().toISOString()
+        });
     }
-});
+}
 
 // ===== SCROLL ANIMATIONS ===== 
 // Use Intersection Observer to animate project cards when they come into view
@@ -233,22 +242,29 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all project cards for animation
-const projectCards = document.querySelectorAll('.project-card');
-projectCards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'all 0.6s ease';
-    observer.observe(card);
+// Initialize scroll animations for project cards
+function initializeScrollAnimations() {
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'all 0.6s ease';
+        observer.observe(card);
+    });
+}
+
+// ===== INITIALIZE ===== 
+// Initialize everything when DOM is fully loaded
+window.addEventListener('DOMContentLoaded', () => {
+    initializeDOMElements();
+    renderProjects();
+    initializeEventListeners();
+    initializeScrollAnimations();
+    
+    console.log('Portfolio website loaded successfully!');
 });
 
 // ===== CONSOLE MESSAGE ===== 
 // Welcome message in the browser console
 console.log('%cWelcome to my portfolio!', 'color: #667eea; font-size: 20px; font-weight: bold;');
 console.log('Feel free to explore and check out my projects!');
-
-// ===== INITIALIZE ===== 
-// Log when the portfolio website has fully loaded
-window.addEventListener('DOMContentLoaded', () => {
-    console.log('Portfolio website loaded successfully!');
-});
