@@ -831,6 +831,13 @@ body {
     .social-links {
         flex-direction: column;
         width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .social-link {
+        width: 100%;
+        flex: none;
     }
 
     .footer .container {
