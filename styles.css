@@ -613,8 +613,8 @@ body {
 }
 
 .contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 3rem;
     margin-top: 3rem;
 }
@@ -695,11 +695,13 @@ body {
 
 .social-links {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
+    width: 100%;
 }
 
 .social-link {
+    flex: 1;
     display: inline-block;
     padding: 1rem;
     background-color: var(--bg-light);
