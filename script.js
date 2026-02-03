@@ -36,8 +36,7 @@ const projects = [
 ];
 
 // ===== DOM ELEMENTS ===== 
-let hamburger, navMenu, navLinks, navbar, contactForm, projectsGrid;
-let nameInput, emailInput, messageInput, nameError, emailError, messageError;
+let hamburger, navMenu, navLinks, navbar, projectsGrid;
 
 // ===== INITIALIZE DOM ELEMENTS ===== 
 function initializeDOMElements() {
@@ -45,16 +44,7 @@ function initializeDOMElements() {
     navMenu = document.getElementById('navMenu');
     navLinks = document.querySelectorAll('.nav-link');
     navbar = document.getElementById('navbar');
-    contactForm = document.getElementById('contactForm');
     projectsGrid = document.getElementById('projectsGrid');
-    
-    // Form elements
-    nameInput = document.getElementById('name');
-    emailInput = document.getElementById('email');
-    messageInput = document.getElementById('message');
-    nameError = document.getElementById('nameError');
-    emailError = document.getElementById('emailError');
-    messageError = document.getElementById('messageError');
 }
 
 // ===== EVENT LISTENERS ===== 
@@ -87,42 +77,6 @@ function initializeEventListeners() {
             }
         });
     });
-
-    // Form validation event listeners
-    if (nameInput) {
-        nameInput.addEventListener('blur', () => {
-            if (!validateName(nameInput.value)) {
-                showError(nameInput, nameError, 'Name must be at least 2 characters long');
-            } else {
-                clearError(nameInput, nameError);
-            }
-        });
-    }
-
-    if (emailInput) {
-        emailInput.addEventListener('blur', () => {
-            if (!validateEmail(emailInput.value)) {
-                showError(emailInput, emailError, 'Please enter a valid email address');
-            } else {
-                clearError(emailInput, emailError);
-            }
-        });
-    }
-
-    if (messageInput) {
-        messageInput.addEventListener('blur', () => {
-            if (!validateMessage(messageInput.value)) {
-                showError(messageInput, messageError, 'Message must be at least 10 characters long');
-            } else {
-                clearError(messageInput, messageError);
-            }
-        });
-    }
-
-    // Form submission
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleFormSubmit);
-    }
 }
 
 // ===== LOAD PROJECTS DYNAMICALLY ===== 
@@ -148,82 +102,6 @@ function renderProjects() {
         `;
         projectsGrid.appendChild(projectCard);
     });
-}
-
-// ===== FORM VALIDATION ===== 
-// Validation function for name (minimum 2 characters)
-function validateName(name) {
-    return name.trim().length >= 2;
-}
-
-// Validation function for email (proper email format)
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// Validation function for message (minimum 10 characters)
-function validateMessage(message) {
-    return message.trim().length >= 10;
-}
-
-// Show error message below input field
-function showError(input, errorElement, message) {
-    input.style.borderColor = '#e53e3e';
-    errorElement.textContent = message;
-    errorElement.classList.add('show');
-}
-
-// Clear error message from input field
-function clearError(input, errorElement) {
-    input.style.borderColor = '';
-    errorElement.textContent = '';
-    errorElement.classList.remove('show');
-}
-
-// Handle form submission with validation
-function handleFormSubmit(e) {
-    e.preventDefault();
-
-    // Validate all fields before submission
-    let isValid = true;
-
-    if (!validateName(nameInput.value)) {
-        showError(nameInput, nameError, 'Name must be at least 2 characters long');
-        isValid = false;
-    } else {
-        clearError(nameInput, nameError);
-    }
-
-    if (!validateEmail(emailInput.value)) {
-        showError(emailInput, emailError, 'Please enter a valid email address');
-        isValid = false;
-    } else {
-        clearError(emailInput, emailError);
-    }
-
-    if (!validateMessage(messageInput.value)) {
-        showError(messageInput, messageError, 'Message must be at least 10 characters long');
-        isValid = false;
-    } else {
-        clearError(messageInput, messageError);
-    }
-
-    // If all fields are valid, submit the form
-    if (isValid) {
-        // Here you would typically send the form data to your backend
-        // For now, we'll show a success message and simulate sending to patelayush8280@gmail.com
-        alert('Thank you for your message! Your message has been sent to patelayush8280@gmail.com. I will get back to you soon.');
-        contactForm.reset();
-        
-        // Log the form data (in a real implementation, this would be sent to a server)
-        console.log('Form data to be sent to patelayush8280@gmail.com:', {
-            name: nameInput.value,
-            email: emailInput.value,
-            message: messageInput.value,
-            timestamp: new Date().toISOString()
-        });
-    }
 }
 
 // ===== SCROLL ANIMATIONS ===== 
