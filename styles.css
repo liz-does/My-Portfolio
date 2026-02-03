@@ -828,6 +828,11 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .social-links {
+        flex-direction: column;
+        width: 100%;
+    }
+
     .footer .container {
         flex-direction: column;
         gap: 1rem;
